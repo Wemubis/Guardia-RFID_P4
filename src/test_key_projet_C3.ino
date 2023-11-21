@@ -75,8 +75,7 @@ void loop() {
 		uid.toUpperCase();
 
 		// Authenticate with the modified keys
-		if (mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, keyA, &(mfrc522.uid))
-			&& mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, 1, keyB, &(mfrc522.uid))) {
+		if (checkKeys()) {
 
 			// Effectuer une requête HTTPS au serveur
 			WiFiClientSecure *client = new WiFiClientSecure;
@@ -130,5 +129,17 @@ void loop() {
 		delay(1000);
 
 		Serial.println(F("Scan RFID card to check for authorization..."));
+	}
+}
+
+int checkKeys() {
+	int	cur = 1;
+
+	while (cur < 6) {
+		if (!mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur, keyA, &(mfrc522.uid)))
+			return (0);
+		if (!mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur, keyB, &(mfrc522.uid)))
+			return (0);
+		cur += 2;
 	}
 }
