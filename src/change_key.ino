@@ -31,17 +31,15 @@ void loop() {
     // CHANGE KEY A
     byte currentKeyA[MFRC522::MF_KEY_SIZE];
     mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, currentKeyA, &(mfrc522.uid));
-
     byte newKeyA[MFRC522::MF_KEY_SIZE] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
-    changeKey(currentKeyA, newKeyA);
+    changeKey(currentKeyA, newKeyA, MFRC522::PICC_CMD_MF_AUTH_KEY_A);
     Serial.println(F("Key A changed successfully!"));
 
     // CHANGE KEY B
     byte currentKeyB[MFRC522::MF_KEY_SIZE];
     mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, 1, currentKeyB, &(mfrc522.uid));
-
     byte newKeyB[MFRC522::MF_KEY_SIZE] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-    changeKeyB(currentKeyB, newKeyB);
+    changeKeyB(currentKeyB, newKeyB, MFRC522::PICC_CMD_MF_AUTH_KEY_B);
     Serial.println(F("Key B changed successfully!"));
 
     // Halt PICC (put the card into sleep mode | signal that the interaction is complete)
@@ -54,19 +52,10 @@ void loop() {
   }
 }
 
-void changeKey(byte currentKey[MFRC522::MF_KEY_SIZE], byte newKey[MFRC522::MF_KEY_SIZE]) {
+void changeKey(byte currentKey[MFRC522::MF_KEY_SIZE], byte newKey[MFRC522::MF_KEY_SIZE], byte authKeyType) {
   for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
     mfrc522.PCD_WriteRegister(MFRC522::SectorTrailBlock, i, newKey[i]);
     currentKey[i] = newKey[i];
 	}
-  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, currentKey, &(mfrc522.uid));
-}
-
-void changeKeyB(byte currentKeyB[MFRC522::MF_KEY_SIZE], byte newKeyB[MFRC522::MF_KEY_SIZE]) {
-  for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
-    // CHECK WHERE TO START FOR B CAUSE NOT SUR RIGHT NOW
-    mfrc522.PCD_WriteRegister(MFRC522::SectorTrailBlock, i, newKeyB[i]);
-    currentKeyB[i] = newKeyB[i];
-	}
-  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, 1, currentKeyB, &(mfrc522.uid));
+  mfrc522.PCD_Authenticate(authKeyType, 1, currentKey, &(mfrc522.uid));
 }
