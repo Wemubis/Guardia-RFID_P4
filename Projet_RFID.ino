@@ -31,11 +31,11 @@ void setup() {
 
         delay(1000);
 
-        Serial.println("Connecting to WiFi...");
+        Serial.println(F("Connecting to WiFi..."));
 
     }
 
-    Serial.println("Connected to WiFi");
+    Serial.println(F("Connected to WiFi"));
 
   
 
@@ -91,9 +91,9 @@ void loop() {
 
     if (error) {
 
-        Serial.print("JSON parsing failed! Error: ");
+        Serial.print(F("JSON parsing failed! Error: "));
 
-        Serial.println(error.c_str());
+        Serial.println(F(error.c_str()));
 
     } else {
 
@@ -105,7 +105,7 @@ void loop() {
 
         if (strcmp(status, "Autorisé") == 0) {
 
-            Serial.println("Accès Autorisé");
+            Serial.println(F("Accès Autorisé"));
 
             // Allumez la LED ou effectuez d'autres actions autorisées
 
@@ -117,19 +117,19 @@ void loop() {
 
         } else if (strcmp(status, "Refusé") == 0) {
 
-            Serial.println("Accès Refusé");
+            Serial.println(F("Accès Refusé"));
 
             // Gérez un accès refusé
 
         } else if (strcmp(status, "Inconnu") == 0) {
 
-            Serial.println("Carte Inconnue");
+            Serial.println(F("Carte Inconnue"));
 
             // Gérez une carte inconnue
 
         } else {
 
-            Serial.println("Unknown status");
+            Serial.println(F("Unknown status"));
 
             // Gérez d'autres statuts si nécessaire
 
@@ -139,11 +139,11 @@ void loop() {
 
 } else {
 
-    Serial.print("HTTP Code: ");
+    Serial.print(F("HTTP Code: "));
 
-    Serial.println(httpCode);
+    Serial.println(F(httpCode));
 
-    Serial.println("Error accessing server");
+    Serial.println(F("Error accessing server"));
 
 }
 
