@@ -38,7 +38,7 @@ void loop() {
       changeKey(currentKeyA, newKeyA, MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur);
       cur += 2;
     }
-    Serial.println(F("Key A changed successfully!"));
+    Serial.println(F("Keys A changed successfully!"));
 
     cur = 1;
     while (cur < 6) {
@@ -49,7 +49,7 @@ void loop() {
       changeKey(currentKeyB, newKeyB, MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur);
       cur += 2;
     }
-    Serial.println(F("Key B changed successfully!"));
+    Serial.println(F("Keys B changed successfully!"));
 
     // Halt PICC (put the card into sleep mode | signal that the interaction is complete)
     mfrc522.PICC_HaltA();
