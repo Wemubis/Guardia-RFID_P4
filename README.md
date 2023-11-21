@@ -2,6 +2,6 @@
 
 Projet en cours
 
->[NOTE] Print() | Println()
-> J'ai ajouté "F()" a l'interieur pour utiliser la flash memory au lieu de la ram.
-> C'est tout lol !!
+>Print() | Println()
+>J'ai ajouté "F()" a l'interieur pour utiliser la flash memory au lieu de la ram.
+>C'est tout lol !!
