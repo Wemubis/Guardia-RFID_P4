@@ -81,7 +81,7 @@ void loop() {
 			WiFiClientSecure *client = new WiFiClientSecure;
 			client->setCACert(rootCACertificate);
 
-			WiFiClientSecure client;
+			// WiFiClientSecure client;
 			HTTPClient https;
 
 			String url = String(serverUrl) + "?cardId=" + uid;
@@ -138,8 +138,12 @@ int checkKeys(byte authKeyA, byte authKeyB) {
 	while (cur < 6) {
 		if (!mfrc522.PCD_Authenticate(authKeyA, cur, keyA, &(mfrc522.uid)))
 			return (0);
+		cur += 2;
+	}
+	cur = 3;
+	while (cur < 10) {
 		if (!mfrc522.PCD_Authenticate(authKeyB, cur, keyB, &(mfrc522.uid)))
 			return (0);
-		cur += 2;
+		cur += 3;
 	}
 }

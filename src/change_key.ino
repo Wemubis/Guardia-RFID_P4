@@ -30,6 +30,7 @@ void loop() {
 
     int cur = 1;
 
+    // IN BLOCK 1 | 3 | 5
     while (cur < 6) {
       // CHANGE KEY A
       byte currentKeyA[MFRC522::MF_KEY_SIZE];
@@ -40,14 +41,15 @@ void loop() {
     }
     Serial.println(F("Keys A changed successfully!"));
 
-    cur = 1;
-    while (cur < 6) {
+    cur = 3;
+    // IN BLOCK 3 | 6 | 9
+    while (cur < 10) {
       // CHANGE KEY B
       byte currentKeyB[MFRC522::MF_KEY_SIZE];
       mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur, currentKeyB, &(mfrc522.uid));
       byte newKeyB[MFRC522::MF_KEY_SIZE] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
       changeKey(currentKeyB, newKeyB, MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur);
-      cur += 2;
+      cur += 3;
     }
     Serial.println(F("Keys B changed successfully!"));
 
