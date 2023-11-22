@@ -1,10 +1,10 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define SS_PIN D1  // Define the SS_PIN
-#define RST_PIN D0 // Define the RST_PIN
+#define SS_PIN D1 // D8
+#define RST_PIN D0 // D4
 
-MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 void setup() {
 	Serial.begin(115200);

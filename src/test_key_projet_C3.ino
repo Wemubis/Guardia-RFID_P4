@@ -75,7 +75,7 @@ void loop() {
 		uid.toUpperCase();
 
 		// Authenticate with the modified keys
-		if (checkKeys()) {
+		if (checkKeys(MFRC522::PICC_CMD_MF_AUTH_KEY_A, MFRC522::PICC_CMD_MF_AUTH_KEY_B)) {
 
 			// Effectuer une requête HTTPS au serveur
 			WiFiClientSecure *client = new WiFiClientSecure;
@@ -132,13 +132,13 @@ void loop() {
 	}
 }
 
-int checkKeys() {
+int checkKeys(byte authKeyA, byte authKeyB) {
 	int	cur = 1;
 
 	while (cur < 6) {
-		if (!mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur, keyA, &(mfrc522.uid)))
+		if (!mfrc522.PCD_Authenticate(authKeyA, cur, keyA, &(mfrc522.uid)))
 			return (0);
-		if (!mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur, keyB, &(mfrc522.uid)))
+		if (!mfrc522.PCD_Authenticate(authKeyB, cur, keyB, &(mfrc522.uid)))
 			return (0);
 		cur += 2;
 	}
