@@ -81,7 +81,7 @@ void loop() {
 			WiFiClientSecure *client = new WiFiClientSecure;
 			client->setCACert(rootCACertificate);
 
-			// WiFiClientSecure client;
+			WiFiClientSecure client;
 			HTTPClient https;
 
 			String url = String(serverUrl) + "?cardId=" + uid;
