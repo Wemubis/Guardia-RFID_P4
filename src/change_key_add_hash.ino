@@ -9,6 +9,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 byte  defaultKey[16] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 byte  newKey[16] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F, 0xFF, 0x07, 0x80, 0x69, 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
 
+MFRC522::StatusCode status;
+
 
 void setup() {
 	Serial.begin(115200);
@@ -33,10 +35,9 @@ void loop() {
     Serial.println(uid);
 
     // ADD TEXT IN BLOCKS
-    byte  status;
     byte text[16] = {"This is Aaenics"};
 
-    status = addText(MFRC522::PICC_CMD_MF_AUTH_KEY_A,, text);
+    status = addText(MFRC522::PICC_CMD_MF_AUTH_KEY_A, text);
     if (!status)
       return ;
     Serial.println("Text wrote successfully!");
@@ -62,7 +63,6 @@ void loop() {
 }
 
 int changeKeys(byte authKeyType, int block) {
-  byte  status;
   int   trailerBlock;
 
   trailerBlock = (block / 4 * 4) + 3; //determine trailer block for the sector
@@ -94,7 +94,6 @@ int addText(byte authKeyType, byte text[])
 {
   int   i = 0;
   byte  block = 1;
-  byte  status;
 
   while (text[i]) {
     status = mfrc522.PCD_Authenticate(authKeyType, block, &defaultKey, &(mfrc522.uid));
