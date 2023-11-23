@@ -35,7 +35,7 @@ void loop() {
     Serial.print(F("UID: "));
     Serial.println(uid);
 
-    // ADD TEXT IN BLOCKS
+    // ADD TEXT IN BLOCK 1
     byte text[16] = {"We did it Dora"};
 
     status = addText(text);
@@ -86,8 +86,7 @@ MFRC522::StatusCode changeKeys(int block) {
   return status;
 }
 
-MFRC522::StatusCode addText(byte text[])
-{
+MFRC522::StatusCode addText(byte text[]) {
   int   i = 0;
   byte  block = 1;
 
