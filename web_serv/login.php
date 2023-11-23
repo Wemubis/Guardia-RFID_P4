@@ -1,4 +1,5 @@
 <?php
+// Démarrage de la session
 session_start();
 
 // Connexion à la base de données SQLite
@@ -9,11 +10,13 @@ try {
     die('Connection failed: ' . $e->getMessage());
 }
 
+// Vérification du type de requête (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération des données du formulaire
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Récupération du statut d'administrateur et de l'ID de l'utilisateur
+    // Récupération du statut d'administrateur et de l'ID de l'utilisateur depuis la base de données
     $query = $db->prepare('SELECT id, is_admin FROM logins WHERE username = :username AND password = :password');
     $query->bindParam(':username', $username, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
@@ -21,16 +24,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // Stockez l'ID de l'utilisateur et le statut d'administrateur dans la session
+        // Stockage de l'ID de l'utilisateur et du statut d'administrateur dans la session
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['is_admin'] = $user['is_admin'];
         $_SESSION['username'] = $username; // Ajout du nom d'utilisateur dans la session
 
-        // Redirigez vers la page d'administration
+        // Redirection vers la page d'administration
         header("Location: admin_panel.php");
         exit();
     } else {
-        // Identifiants incorrects, affichez un message d'erreur par exemple
+        // Identifiants incorrects, affichage d'un message d'erreur par exemple
         $error_message = "Identifiants incorrects";
     }
 }
