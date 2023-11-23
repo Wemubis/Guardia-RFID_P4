@@ -1,7 +1,6 @@
 # Projet-4-RFID
 
-Projet en cours
+Conception du circuit et sa documentation : 
 
->Print() | Println() :
->j'ai ajouté "F()" a l'interieur pour utiliser la flash memory au lieu de la ram.
->C'est tout lol !!
+Justification des choix techniques et UX : 
+
