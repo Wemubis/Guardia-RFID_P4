@@ -3,8 +3,6 @@
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <MFRC522.h>
-#include <stdio.h>
-#include <string.h>
 
 const char* ssid = "Seb";
 const char* password = "12345678914";
@@ -31,6 +29,7 @@ void setup() {
 		delay(1000);
 		Serial.print(".");
 	}
+	Serial.println("");
 	Serial.println("Connected to WiFi!");
 
 	SPI.begin();
@@ -39,23 +38,23 @@ void setup() {
 }
 
 void loop() {
-	String cardId = read_UID();
+	String cardId = readCard();
 
 	// Look for new cards
 	if (cardId != "") {
 		Serial.println("Card detected!");
 
 		// Authenticate with the modified keys
-		if (checkKeysAndReadBlock() != MFRC522::STATUS_OK) {
+		if (checkKeys() != MFRC522::STATUS_OK) {
 
 			// Effectuer une requête HTTPS au serveur
-	        WiFiClientSecure client;
+	    WiFiClientSecure client;
 			client.setInsecure();  // Ignorer la vérification du certificat
 			HTTPClient http;
 
 			String url = String(serverUrl) + "?cardId=" + cardId;
 
-			if (http.begin(*client, url)) {
+			if (http.begin(client, url)) {
 				int	httpCode = http.GET();
 
 				if (httpCode == 200) {
@@ -85,7 +84,7 @@ void loop() {
 					Serial.println(httpCode);
 					Serial.println("Error accessing server");
 				}
-				https.end();
+				http.end();
 			}
 
 		} else {
@@ -97,27 +96,19 @@ void loop() {
 	}
 }
 
-MFRC522::STATUS_OK checkKeysAndReadBlock() {
+MFRC522::StatusCode checkKeys() {
 	int		block = 4;
 	byte	lenBuffer = 18;
 	byte	readDataBlock[18];
 
 	while (block < 64) {
-		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &keyA, &(mfrc522.uid))
+		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &newKeyA, &(mfrc522.uid));
 		if (status != MFRC522::STATUS_OK) {
 			Serial.print("PCD_Authenticate() failed: ");
 			Serial.println(mfrc522.GetStatusCodeName(status));
 			return status;
   		}
 		block += 4;
-	}
-
-	block = 1;
-	status = mfrc522.MIFARE_Read(block, readDataBlock, lenBuffer);
-	if (status != MFRC522::STATUS_OK) {
-		Serial.print("MIFARE_Write() failed: ");
-		Serial.println(mfrc522.GetStatusCodeName(status));
-		return status;
 	}
 	return status;
 }
