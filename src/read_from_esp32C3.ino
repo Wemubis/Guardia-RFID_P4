@@ -97,7 +97,7 @@ void loop() {
 }
 
 MFRC522::StatusCode checkKeys() {
-	int		block = 4;
+	int		block = 4; // DO NOT TOUCH SECTOR 0
 
 	while (block < 64) {
 		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &newKeyA, &(mfrc522.uid));
