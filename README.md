@@ -7,7 +7,7 @@ Conception du circuit et sa documentation :
 
 Justification des choix techniques et UX : 
 
-#### 1) <u>Utilisation de bibliothèques :<\u>
+#### 1) <u>Utilisation de bibliothèques :</u>
 
 Nous avons intégré des bibliothèques telles que ESP8266WiFi.h, ESP8266HTTPClient.h, ArduinoJson.h, et MFRC522.h pour profiter de fonctionnalités prêtes à l'emploi, simplifiant ainsi notre travail avec l'ESP8266, les requêtes HTTP, la manipulation de JSON, et le lecteur RFID.
 
