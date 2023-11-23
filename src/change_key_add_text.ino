@@ -43,7 +43,7 @@ void loop() {
       return ;
     Serial.println("Text wrote successfully!");
 
-    int block = 1;
+    int block = 4; // START SECTOR 1
     // IN ALL SECTORS
     while (block < 64) {
       status = changeKeys(block);
