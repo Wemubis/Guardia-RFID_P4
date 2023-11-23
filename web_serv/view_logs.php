@@ -1,13 +1,14 @@
 <?php
+// Démarrage de la session
 session_start();
 
-// Vérifiez si l'utilisateur est connecté, sinon redirigez-le vers la page de connexion
+// Vérifie si l'utilisateur est connecté, sinon le redirige vers la page de connexion
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Vérifiez si l'utilisateur est administrateur, sinon redirigez-le vers une page non autorisée
+// Vérifie si l'utilisateur est administrateur, sinon le redirige vers une page non autorisée
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
     header("Location: unauthorized.php");
     exit();
@@ -29,14 +30,14 @@ function getLogsList($db, $limit) {
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Définissez le nombre de lignes par défaut
+// Définir le nombre de lignes par défaut
 $defaultLimit = 10;
 
-// Vérifiez si le formulaire a été soumis
+// Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['form_action']) && $_POST['form_action'] == 'set_limit') {
         $selected_limit = $_POST['selected_limit'];
-        // Mettez à jour le nombre de lignes à afficher dans la session
+        // Mettre à jour le nombre de lignes à afficher dans la session
         $_SESSION['log_limit'] = $selected_limit;
     }
 }
