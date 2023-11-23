@@ -6,8 +6,9 @@
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
-byte  defaultKey[16] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+byte  defaultKey[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 byte  newKey[16] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F, 0xFF, 0x07, 0x80, 0x69, 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
+byte  newKeyA[6] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
 
 MFRC522::StatusCode status;
 
@@ -81,7 +82,7 @@ MFRC522::StatusCode changeKeys(int block) {
     return status;
   }
 
-  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &newKey, &(mfrc522.uid));
+  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &newKeyA, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
