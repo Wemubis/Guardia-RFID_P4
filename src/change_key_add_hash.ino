@@ -12,11 +12,7 @@ void setup() {
 	SPI.begin();
 	mfrc522.PCD_Init();
 	Serial.println(F("Scan the RFID card to change the keys..."));
-
-
-  MFRC522::MIFARE_Key currentKey;
-  for (byte i = 0; i < 6; i++) currentKey.keyByte[i] = 0xFF;
-
+  
 }
 
 void loop() {
@@ -35,7 +31,8 @@ void loop() {
     Serial.println(F(uid));
 
     // ADD HASH IN BLOCKS
-    char *hardHash = "";
+    byte currentKey[MFRC522::MF_KEY_SIZE] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+    char *hardHash = "kjdhfgquhnqvoivghut345768y\0";
     add_hash(currentKey, hardHash);
 
     int cur = 1;
