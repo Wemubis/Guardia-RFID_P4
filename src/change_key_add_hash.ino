@@ -38,9 +38,7 @@ void loop() {
     char *hardHash = "";
     add_hash(currentKey, hardHash);
 
-
     int cur = 1;
-
     // IN BLOCK 1 | 3 | 5
     while (cur < 6) {
       // CHANGE KEY A
@@ -90,7 +88,7 @@ void add_hash(byte key, char *hash) {
     status = mfrc522.MIFARE_Write(block, (byte)&hash[i], 16);
     if (status != MFRC522::STATUS_OK) {
       Serial.print(F("MIFARE_Write() failed: "));
-      Serial.println(mfrc522.GetStatusCodeName(status));
+      Serial.println(F(mfrc522.GetStatusCodeName(status)));
       return;
     }
     i += 16;
