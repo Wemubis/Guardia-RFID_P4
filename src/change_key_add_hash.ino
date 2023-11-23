@@ -37,7 +37,7 @@ void loop() {
     // ADD TEXT IN BLOCKS
     byte text[16] = {"This is Aaenics"};
 
-    status = addText(MFRC522::PICC_CMD_MF_AUTH_KEY_A, text);
+    status = addText(text);
     if (status != MFRC522::STATUS_OK)
       return ;
     Serial.println("Text wrote successfully!");
@@ -45,7 +45,7 @@ void loop() {
     int block = 1;
     // IN ALL SECTORS
     while (block < 64) {
-      status = changeKeys(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block);
+      status = changeKeys(block);
       if (status != MFRC522::STATUS_OK)
         return ;
       block += 4;
@@ -62,12 +62,12 @@ void loop() {
   }
 }
 
-MFRC522::StatusCode changeKeys(byte authKeyType, int block) {
+MFRC522::StatusCode changeKeys(int block) {
   int   trailerBlock;
 
   trailerBlock = (block / 4 * 4) + 3; //determine trailer block for the sector
   
-  status = mfrc522.PCD_Authenticate(authKeyType, trailerBlock, &defaultKey, &(mfrc522.uid));
+  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &defaultKey, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
@@ -81,7 +81,7 @@ MFRC522::StatusCode changeKeys(byte authKeyType, int block) {
     return status;
   }
 
-  mfrc522.PCD_Authenticate(authKeyType, trailerBlock, &newKey, &(mfrc522.uid));
+  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &newKey, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
@@ -90,13 +90,13 @@ MFRC522::StatusCode changeKeys(byte authKeyType, int block) {
   return status;
 }
 
-MFRC522::StatusCode addText(byte authKeyType, byte text[])
+MFRC522::StatusCode addText(byte text[])
 {
   int   i = 0;
   byte  block = 1;
 
   while (text[i]) {
-    status = mfrc522.PCD_Authenticate(authKeyType, block, &defaultKey, &(mfrc522.uid));
+    status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &defaultKey, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK) {
       Serial.print("PCD_Authenticate() failed: ");
       Serial.println(mfrc522.GetStatusCodeName(status));
