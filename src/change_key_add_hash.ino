@@ -1,10 +1,13 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define SS_PIN D1 // D8
-#define RST_PIN D0 // D4
+#define SS_PIN D1
+#define RST_PIN D0
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+byte  defaultKey[16] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+byte  newKey[16] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F, 0xFF, 0x07, 0x80, 0x69, 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
 
 
 void setup() {
@@ -12,7 +15,6 @@ void setup() {
 	SPI.begin();
 	mfrc522.PCD_Init();
 	Serial.println("Scan the RFID card to change the keys...");
-  
 }
 
 void loop() {
@@ -30,32 +32,24 @@ void loop() {
     Serial.print(F("UID: "));
     Serial.println(uid);
 
-    // ADD HASH IN BLOCKS
-    MFRC522::MIFARE_Key currentKey = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-    char *hardHash = "kjdhfgquhnqvoivghut345768y\0";
-    add_hash(&currentKey, hardHash);
+    // ADD TEXT IN BLOCKS
+    byte  status;
+    byte text[16] = {"This is Aaenics"};
 
-    int cur = 1;
-    // IN BLOCK 1 | 3 | 5
-    while (cur < 6) {
-      // CHANGE KEY A
-      mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur, &currentKey, &(mfrc522.uid));
-      MFRC522::MIFARE_Key newKeyA = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
-      changeKey(&currentKey, &newKeyA, MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur);
-      cur += 2;
-    }
-    Serial.println("Keys A changed successfully!");
+    status = addText(MFRC522::PICC_CMD_MF_AUTH_KEY_A,, text);
+    if (!status)
+      return ;
+    Serial.println("Text wrote successfully!");
 
-    cur = 3;
-    // IN BLOCK 3 | 6 | 9
-    while (cur < 13) {
-      // CHANGE KEY B
-      mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur, &currentKey, &(mfrc522.uid));
-      MFRC522::MIFARE_Key newKeyB = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-      changeKey(&currentKey, &newKeyB, MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur);
-      cur += 3;
+    int block = 1;
+    // IN ALL SECTORS
+    while (block < 64) {
+      status = changeKeys(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block);
+      if (!status)
+        return ;
+      block += 4;
     }
-    Serial.println("Keys B changed successfully!");
+    Serial.println("Keys changed successfully!");
 
     // Halt PICC (put the card into sleep mode | signal that the interaction is complete)
     mfrc522.PICC_HaltA();
@@ -67,28 +61,61 @@ void loop() {
   }
 }
 
-void changeKey(MFRC522::MIFARE_Key *currentKey, MFRC522::MIFARE_Key *newKey, byte authKeyType, int cur) {
-  for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
-    mfrc522.PCD_WriteRegister(MFRC522::SectorTrailBlock, i, *newKey[i]);
-    currentKey[i] = newKey[i];
-	}
-  mfrc522.PCD_Authenticate(authKeyType, cur, currentKey, &(mfrc522.uid));
+int changeKeys(byte authKeyType, int block) {
+  byte  status;
+  int   trailerBlock;
+
+  trailerBlock = (block / 4 * 4) + 3; //determine trailer block for the sector
+  
+  status = mfrc522.PCD_Authenticate(authKeyType, trailerBlock, &defaultKey, &(mfrc522.uid));
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print("PCD_Authenticate() failed: ");
+    Serial.println(mfrc522.GetStatusCodeName(status));
+    return 0;
+  }
+
+  status = mfrc522.MIFARE_Write(trailerBlock, newKey, 16);
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print("MIFARE_Write() failed: ");
+    Serial.println(mfrc522.GetStatusCodeName(status));
+    return 0;
+  }
+
+  mfrc522.PCD_Authenticate(authKeyType, trailerBlock, &newKey, &(mfrc522.uid));
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print("PCD_Authenticate() failed: ");
+    Serial.println(mfrc522.GetStatusCodeName(status));
+    return 0;
+  }
+  return 1;
 }
 
-void add_hash(MFRC522::MIFARE_Key *key, char *hash) {
-  int i = 0;
+int addText(byte authKeyType, byte text[])
+{
+  int   i = 0;
   byte  block = 1;
-  MFRC522::StatusCode status;
+  byte  status;
 
-  while (hash[i] && block <= 15) {
-    mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, key, &(mfrc522.uid));
-    status = mfrc522.MIFARE_Write(block, (byte *)&hash[i], 16);
+  while (text[i]) {
+    status = mfrc522.PCD_Authenticate(authKeyType, block, &defaultKey, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK) {
-      Serial.print(F("MIFARE_Write() failed: "));
+      Serial.print("PCD_Authenticate() failed: ");
       Serial.println(mfrc522.GetStatusCodeName(status));
-      return;
+      return 0;
+    }
+    status = mfrc522.MIFARE_Write(block, &text[i], 16);
+    if (status != MFRC522::STATUS_OK) {
+      Serial.print("MIFARE_Write() failed: ");
+      Serial.println(mfrc522.GetStatusCodeName(status));
+      return 0;
     }
     i += 16;
     block++;
+    if ((block % 4) == 3) {
+      block++;
+    }
   }
+
+  Serial.println("block written");
+  return 1;
 }
