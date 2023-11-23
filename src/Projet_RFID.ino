@@ -7,7 +7,6 @@
 const char* ssid = "Seb";
 const char* password = "12345678914";
 const char* serverUrl = "https://cloud.sebhost.fr/rfid-app/checkAccess.php";  // Utilisation de HTTPS
-const int ledPin = D2;
 
 #define SS_PIN 15  // D8
 #define RST_PIN 2   // D4
@@ -22,9 +21,6 @@ void setup() {
         Serial.println("Connecting to WiFi...");
     }
     Serial.println("Connected to WiFi");
-
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, LOW);
 
     SPI.begin();
     mfrc522.PCD_Init();
@@ -56,9 +52,6 @@ void loop() {
 
                     if (strcmp(status, "Autorisé") == 0) {
                         Serial.println("Accès Autorisé");
-                        digitalWrite(ledPin, HIGH);
-                        delay(5000);
-                        digitalWrite(ledPin, LOW);
                     } else if (strcmp(status, "Refusé") == 0) {
                         Serial.println("Accès Refusé");
                     } else if (strcmp(status, "Inconnu") == 0) {
