@@ -31,7 +31,7 @@ void loop() {
     Serial.println(F(uid));
 
     // ADD HASH IN BLOCKS
-    MFRC522::MIFARE_Key currentKey[MFRC522::MF_KEY_SIZE] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+    MFRC522::MIFARE_Key currentKey = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
     char *hardHash = "kjdhfgquhnqvoivghut345768y\0";
     add_hash(&currentKey, hardHash);
 
@@ -40,7 +40,7 @@ void loop() {
     while (cur < 6) {
       // CHANGE KEY A
       mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur, &currentKey, &(mfrc522.uid));
-      MFRC522::MIFARE_Key newKeyA[MFRC522::MF_KEY_SIZE] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
+      MFRC522::MIFARE_Key newKeyA = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
       changeKey(&currentKey, &newKeyA, MFRC522::PICC_CMD_MF_AUTH_KEY_A, cur);
       cur += 2;
     }
@@ -51,7 +51,7 @@ void loop() {
     while (cur < 13) {
       // CHANGE KEY B
       mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur, &currentKey, &(mfrc522.uid));
-      MFRC522::MIFARE_Key newKeyB[MFRC522::MF_KEY_SIZE] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
+      MFRC522::MIFARE_Key newKeyB = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
       changeKey(&currentKey, &newKeyB, MFRC522::PICC_CMD_MF_AUTH_KEY_B, cur);
       cur += 3;
     }
