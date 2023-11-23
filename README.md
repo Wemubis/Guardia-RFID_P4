@@ -1,13 +1,13 @@
 # Projet-4-RFID
 
-Conception du circuit et sa documentation : 
+### Conception du circuit et sa documentation : 
   
   La connection entre l'ESP32-C3 et le lecteur de carte RFID-RC522 s'effectue en SPI.
   La communication entre la base de données (Raspberry Pi 4) et l'ESP32-C3 se fera en WiFi.
 
-Justification des choix techniques et UX : 
+### Justification des choix techniques et UX : 
 
-#### 1) <u>Utilisation de bibliothèques :</u>
+#### 1) Utilisation de bibliothèques :
 
 Nous avons intégré des bibliothèques telles que ESP8266WiFi.h, ESP8266HTTPClient.h, ArduinoJson.h, et MFRC522.h pour profiter de fonctionnalités prêtes à l'emploi, simplifiant ainsi notre travail avec l'ESP8266, les requêtes HTTP, la manipulation de JSON, et le lecteur RFID.
 
