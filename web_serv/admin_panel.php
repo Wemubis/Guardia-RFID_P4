@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-// Vérifiez si l'utilisateur est connecté, sinon redirigez-le vers la page de connexion
+// Vérifie si l'utilisateur est connecté, sinon redirige-le vers la page de connexion
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Vérifiez si l'utilisateur est administrateur, sinon redirigez-le vers une page non autorisée
+// Vérifie si l'utilisateur est administrateur, sinon redirige-le vers une page non autorisée
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
     header("Location: unauthorized.php");
     exit();
@@ -42,48 +42,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $form_action = $_POST['form_action'];
 
         if ($form_action == 'add_card') {
-            // Traitement de l'ajout d'une nouvelle carte
+            // Traitemer l'ajout d'une nouvelle carte
             $new_card = $_POST['new_card'];
 
-            // Vérifiez si la carte existe déjà
+            // Vérifie si la carte existe déjà
             $existing_cards = array_column(getCardList($db), 'id');
             if (!in_array($new_card, $existing_cards)) {
-                // Ajoutez la nouvelle carte à la base de données avec le statut "Refusé" par défaut
+                // Ajouter la nouvelle carte à la base de données avec le statut "Refusé" par défaut
                 $query = $db->prepare('INSERT INTO badges (id, status) VALUES (:id, :status)');
                 $query->bindValue(':id', $new_card, PDO::PARAM_STR);
                 $query->bindValue(':status', 'Refusé', PDO::PARAM_STR);
                 $query->execute();
 
-                // Ajoutez un log pour l'ajout de carte
+                // Ajouter un log pour l'ajout de carte
                 addLog($db, $_SESSION['user_id'], 'Ajout de carte RFID', "Carte ajoutée : $new_card");
             }
 
         } elseif ($form_action == 'remove_card') {
-            // Traitement de la suppression d'une carte
+            // Traiter la suppression d'une carte
             if (isset($_POST['submit_remove_card'])) { // Vérifier si le bouton Supprimer la carte a été soumis
                 $selected_card_delete = $_POST['selected_card_delete'];
 
-                // Supprimez la carte de la base de données
+                // Supprimer la carte de la base de données
                 $query = $db->prepare('DELETE FROM badges WHERE id = :id');
                 $query->bindParam(':id', $selected_card_delete, PDO::PARAM_STR);
                 $query->execute();
 
-                // Ajoutez un log pour la suppression de carte
+                // Ajouter un log pour la suppression de carte
                 addLog($db, $_SESSION['user_id'], 'Suppression de carte RFID', "Carte supprimée : $selected_card_delete");
             }
 
         } elseif ($form_action == 'update_status') {
-            // Traitement de la modification du statut d'une carte
+            // Traiter la modification du statut d'une carte
             $selected_card = $_POST['selected_card'];
             $new_status = $_POST['new_status'];
 
-            // Mettez à jour le statut de la carte dans la base de données
+            // Mettre à jour le statut de la carte dans la base de données
             $query = $db->prepare('UPDATE badges SET status = :status WHERE id = :id');
             $query->bindParam(':status', $new_status, PDO::PARAM_STR);
             $query->bindParam(':id', $selected_card, PDO::PARAM_STR);
             $query->execute();
 
-            // Ajoutez un log pour la modification du statut de carte
+            // Ajouter un log pour la modification du statut de carte
             addLog($db, $_SESSION['user_id'], 'Modification du statut de carte RFID', "Nouveau statut : $new_status pour la carte : $selected_card");
         }
     }
