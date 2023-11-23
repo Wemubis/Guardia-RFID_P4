@@ -1,22 +1,27 @@
 import sqlite3
+import sys
+def mutual(card):
+    connection = sqlite3.connect("badges.db")
+    cursor = connection.cursor()
 
-card = ""
+    cursor.execute("SELECT hash_card FROM hash")
 
-connection = sqlite3.connect("base_de_donnee.db")
+    result = cursor.fetchall()
 
-cursor = connection.cursor()
+    connection_ok = 0
 
-cursor.execute("SELECT * FROM hash")
+    for line in result:
+        if card == line:
+            connection_ok = 1
+            break
+        else:
+            connection_ok = 0
 
-result = cursor.fetchall()
+    print(connection_ok)
 
-connection_ok = 0
-
-for line in result:
-    if card == line:
-        connection_ok = 1
-        break
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <card_number>")
     else:
-        connection_ok = 0
-
-print(connection_ok)
+        card_number = sys.argv[1]
+        mutual(card_number)
