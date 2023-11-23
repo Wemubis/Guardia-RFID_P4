@@ -6,9 +6,9 @@
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
-byte  defaultKey[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+MFRC522::MIFARE_Key  defaultKey = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+MFRC522::MIFARE_Key  newKeyA = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
 byte  newKey[16] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F, 0xFF, 0x07, 0x80, 0x69, 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-byte  newKeyA[6] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
 
 MFRC522::StatusCode status;
 
@@ -36,7 +36,7 @@ void loop() {
     Serial.println(uid);
 
     // ADD TEXT IN BLOCKS
-    byte text[16] = {"This is Aaenics"};
+    byte text[16] = {"We did it Dora"};
 
     status = addText(text);
     if (status != MFRC522::STATUS_OK)
@@ -96,24 +96,18 @@ MFRC522::StatusCode addText(byte text[])
   int   i = 0;
   byte  block = 1;
 
-  while (text[i]) {
-    status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &defaultKey, &(mfrc522.uid));
-    if (status != MFRC522::STATUS_OK) {
-      Serial.print("PCD_Authenticate() failed: ");
-      Serial.println(mfrc522.GetStatusCodeName(status));
-      return status;
-    }
-    status = mfrc522.MIFARE_Write(block, &text[i], 16);
-    if (status != MFRC522::STATUS_OK) {
-      Serial.print("MIFARE_Write() failed: ");
-      Serial.println(mfrc522.GetStatusCodeName(status));
-      return status;
-    }
-    i += 16;
-    block++;
-    if ((block % 4) == 3) {
-      block++;
-    }
+  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &defaultKey, &(mfrc522.uid));
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print("PCD_Authenticate() failed: ");
+    Serial.println(mfrc522.GetStatusCodeName(status));
+    return status;
+  }
+
+  status = mfrc522.MIFARE_Write(block, &text[i], 16);
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print("MIFARE_Write() failed: ");
+    Serial.println(mfrc522.GetStatusCodeName(status));
+    return status;
   }
 
   Serial.println("block written");
