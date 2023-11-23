@@ -44,7 +44,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 // DEFINE NEW KEYS
 byte keyA[MFRC522::MF_KEY_SIZE] = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
 byte keyB[MFRC522::MF_KEY_SIZE] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-
+3
 void setup() {
 	Serial.begin(115200);
 
@@ -141,9 +141,14 @@ int checkKeys(byte authKeyA, byte authKeyB) {
 		cur += 2;
 	}
 	cur = 3;
-	while (cur < 10) {
+	while (cur < 13) {
 		if (!mfrc522.PCD_Authenticate(authKeyB, cur, keyB, &(mfrc522.uid)))
 			return (0);
 		cur += 3;
 	}
 }
+
+int checkKeys(byte authKeyA, byte authKeyB) {
+	
+}
+

@@ -42,22 +42,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Ajout du lien vers le fichier CSS -->
 </head>
 <body>
-    <h2>Login</h2>
-
-    <?php if (isset($error_message)) : ?>
-        <p><?php echo $error_message; ?></p>
-    <?php endif; ?>
-
     <form method="post" action="login.php">
+        <h2>Login</h2>
+
+        <?php if (isset($error_message)) : ?>
+            <p><?php echo $error_message; ?></p>
+        <?php endif; ?>
+
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit">Login</button>
+        <button type="submit" class="center">Login</button>
     </form>
 </body>
 </html>

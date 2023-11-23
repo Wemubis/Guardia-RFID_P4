@@ -91,61 +91,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Panel Admin</title>
+    <link rel="stylesheet" href="admin_styles.css">
 </head>
 <body>
-    <h2>Admin Panel</h2>
-    <p>Bienvenue, <?php echo $_SESSION['username']; ?>!</p>
-    <p><a href="logout.php">Logout</a></p>
+    <div class="navbar">
+        <div class="container">
+            <a href="view_logs.php">Voir les logs</a>
+            <a href="logout.php">Déconnexion</a>
+        </div>
+    </div>
 
-    <h3>Liste des cartes RFID</h3>
+    <div class="container">
+        <h2>Panel Admin</h2>
+        <span>Bienvenue, <?php echo $_SESSION['username']; ?>!</span>
+        <h3>Liste des cartes RFID</h3>
 
-    <form method="post" action="admin_panel.php">
-        <label for="selected_card">Sélectionner une carte :</label>
-        <select id="selected_card" name="selected_card">
-            <?php
-            $card_list = getCardList($db);
-            foreach ($card_list as $card) {
-                echo "<option value='{$card['id']}'>{$card['id']}</option>";
-            }
-            ?>
-        </select>
+        <form method="post" action="admin_panel.php">
+            <label for="selected_card">Sélectionner une carte :</label>
+            <select id="selected_card" name="selected_card">
+                <?php
+                $card_list = getCardList($db);
+                foreach ($card_list as $card) {
+                    echo "<option value='{$card['id']}'>{$card['id']}</option>";
+                }
+                ?>
+            </select>
 
-        <label for="new_status">Nouveau statut :</label>
-        <select id="new_status" name="new_status">
-            <option value="Autorisé">Autorisé</option>
-            <option value="Refusé">Refusé</option>
-        </select>
+            <label for="new_status">Nouveau statut :</label>
+            <select id="new_status" name="new_status">
+                <option value="Autorisé">Autorisé</option>
+                <option value="Refusé">Refusé</option>
+            </select>
 
-        <input type="hidden" name="form_action" value="update_status"> <!-- Champ caché pour distinguer l'action -->
-        <button type="submit">Modifier le statut</button>
-    </form>
+            <input type="hidden" name="form_action" value="update_status"> <!-- Champ caché pour distinguer l'action -->
+            <button type="submit">Modifier le statut</button>
+        </form>
 
-    <form method="post" action="admin_panel.php">
-        <label for="selected_card_delete">Sélectionner une carte à supprimer :</label>
-        <select id="selected_card_delete" name="selected_card_delete">
-            <?php
-            foreach ($card_list as $card) {
-                echo "<option value='{$card['id']}'>{$card['id']}</option>";
-            }
-            ?>
-        </select>
+        <form method="post" action="admin_panel.php">
+            <label for="selected_card_delete">Sélectionner une carte à supprimer :</label>
+            <select id="selected_card_delete" name="selected_card_delete">
+                <?php
+                foreach ($card_list as $card) {
+                    echo "<option value='{$card['id']}'>{$card['id']}</option>";
+                }
+                ?>
+            </select>
 
-        <input type="hidden" name="form_action" value="remove_card"> <!-- Champ caché pour distinguer l'action -->
-        <button type="submit" name="submit_remove_card">Supprimer la carte</button>
-    </form>
+            <input type="hidden" name="form_action" value="remove_card"> <!-- Champ caché pour distinguer l'action -->
+            <button type="submit" name="submit_remove_card">Supprimer la carte</button>
+        </form>
 
-    <h3>Ajouter une nouvelle carte RFID</h3>
+        <h3>Ajouter une nouvelle carte RFID</h3>
 
-    <form method="post" action="admin_panel.php">
-        <label for="new_card">Nouvelle carte :</label>
-        <input type="text" id="new_card" name="new_card" required>
-        <input type="hidden" name="form_action" value="add_card"> <!-- Champ caché pour distinguer l'action -->
-        <button type="submit">Ajouter la carte</button>
-    </form>
+        <form method="post" action="admin_panel.php">
+            <label for="new_card">Nouvelle carte :</label>
+            <input type="text" id="new_card" name="new_card" required>
+            <input type="hidden" name="form_action" value="add_card"> <!-- Champ caché pour distinguer l'action -->
+            <button type="submit">Ajouter la carte</button>
+        </form>
+    </div>
 </body>
 </html>
