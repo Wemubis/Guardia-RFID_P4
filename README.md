@@ -18,7 +18,7 @@
 ## Justification des choix techniques et UX : 
 ### 1) Utilisation de bibliothèques :
 
-Nous avons intégré des bibliothèques telles que _ESP8266WiFi.h_, _ESP8266HTTPClient.h_, _ArduinoJson.h_, et _MFRC522.h_ pour simplifier notre travail avec l'ESP8266, les requêtes HTTP, le traitement de JSON, et le lecteur RFID.
+Nous avons intégré des bibliothèques telles que **ESP8266WiFi.h**, **ESP8266HTTPClient.h**, **ArduinoJson.h**, et **MFRC522.h** pour simplifier notre travail avec l'ESP8266, les requêtes HTTP, le traitement de JSON, et le lecteur RFID.
 
 ### 2) Configuration WiFi :
 
@@ -26,7 +26,7 @@ Les informations de connexion WiFi (SSID et mot de passe) sont stockées en tant
 
 ### 3) URL du serveur :
 
-L'URL du serveur est définie en tant que constante (serverUrl), facilitant ainsi d'éventuelles modifications en cas de changement de serveur. Cela rend notre code plus flexible.
+L'URL du serveur est définie en tant que constante _(serverUrl)_, facilitant ainsi d'éventuelles modifications en cas de changement de serveur. Cela rend notre code plus flexible.
 
 ### 4) HTTPS et WiFiClientSecure :
 
