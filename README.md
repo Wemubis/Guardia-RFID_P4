@@ -38,7 +38,7 @@ La communication série est intégrée pour faciliter le débogage en affichant 
 
 ### 6) Structure du code :
 
-Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'initialisation des opérations répétitives. La fonction _`readCard()_` encapsule la logique de lecture des cartes RFID, améliorant la lisibilité.
+Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'initialisation des opérations répétitives. La fonction `readCard()` encapsule la logique de lecture des cartes RFID, améliorant la lisibilité.
 
 ### 7) Gestion des erreurs :
 
@@ -46,4 +46,4 @@ Des vérifications d'erreur sont incluses, telles que la vérification du statut
 
 ### 8) Fonction de délai :
 
-Un délai d'une seconde _(`delay(1000)`)_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
+Un délai d'une seconde _`delay(1000)`_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
