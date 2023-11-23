@@ -53,7 +53,7 @@ void loop() {
     }
     Serial.println("Keys changed successfully!");
 
-    // Halt PICC (put the card into sleep mode | signal that the interaction is complete)
+    // Halt PICC (put the card into sleep mode)
     mfrc522.PICC_HaltA();
     // Stop encryption on PCD
     mfrc522.PCD_StopCrypto1();
@@ -103,7 +103,6 @@ MFRC522::StatusCode addText(byte text[])
     return status;
   }
 
-  status = mfrc522.MIFARE_Write(block, &text[i], 16);
   if (status != MFRC522::STATUS_OK) {
     Serial.print("MIFARE_Write() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
