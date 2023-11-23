@@ -4,15 +4,15 @@
 
   #### 1) ESP8266 Module (NodeMCU) :
 
-    Ce module est utilisé comme microcontrôleur principal pour le système. Il intègre le module WiFi ESP8266 et offre une plateforme compatible avec l'Arduino.
+  Ce module est utilisé comme microcontrôleur principal pour le système. Il intègre le module WiFi ESP8266 et offre une plateforme compatible avec l'Arduino.
 
   #### 2) RFID Module (MFRC522):
  
-    Le module RFID MFRC522 est utilisé pour la lecture des cartes RFID. Il communique avec l'ESP8266 via SPI (Serial Peripheral Interface).
+  Le module RFID MFRC522 est utilisé pour la lecture des cartes RFID. Il communique avec l'ESP8266 via SPI (Serial Peripheral Interface).
 
   #### 3) LED (Indicateur visuel) :
 
-    Une LED est utilisée comme indicateur visuel pour signaler l'accès autorisé ou refusé. Elle est connectée à la broche D2 de l'ESP8266.
+  Une LED est utilisée comme indicateur visuel pour signaler l'accès autorisé ou refusé. Elle est connectée à la broche D2 de l'ESP8266.
 
 
   
