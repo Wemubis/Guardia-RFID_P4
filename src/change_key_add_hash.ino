@@ -38,7 +38,7 @@ void loop() {
     byte text[16] = {"This is Aaenics"};
 
     status = addText(MFRC522::PICC_CMD_MF_AUTH_KEY_A, text);
-    if (!status)
+    if (status != MFRC522::STATUS_OK)
       return ;
     Serial.println("Text wrote successfully!");
 
@@ -46,7 +46,7 @@ void loop() {
     // IN ALL SECTORS
     while (block < 64) {
       status = changeKeys(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block);
-      if (!status)
+      if (status != MFRC522::STATUS_OK)
         return ;
       block += 4;
     }
@@ -62,7 +62,7 @@ void loop() {
   }
 }
 
-int changeKeys(byte authKeyType, int block) {
+MFRC522::StatusCode changeKeys(byte authKeyType, int block) {
   int   trailerBlock;
 
   trailerBlock = (block / 4 * 4) + 3; //determine trailer block for the sector
@@ -71,26 +71,26 @@ int changeKeys(byte authKeyType, int block) {
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
-    return 0;
+    return status;
   }
 
   status = mfrc522.MIFARE_Write(trailerBlock, newKey, 16);
   if (status != MFRC522::STATUS_OK) {
     Serial.print("MIFARE_Write() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
-    return 0;
+    return status;
   }
 
   mfrc522.PCD_Authenticate(authKeyType, trailerBlock, &newKey, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
-    return 0;
+    return status;
   }
-  return 1;
+  return status;
 }
 
-int addText(byte authKeyType, byte text[])
+MFRC522::StatusCode addText(byte authKeyType, byte text[])
 {
   int   i = 0;
   byte  block = 1;
@@ -100,13 +100,13 @@ int addText(byte authKeyType, byte text[])
     if (status != MFRC522::STATUS_OK) {
       Serial.print("PCD_Authenticate() failed: ");
       Serial.println(mfrc522.GetStatusCodeName(status));
-      return 0;
+      return status;
     }
     status = mfrc522.MIFARE_Write(block, &text[i], 16);
     if (status != MFRC522::STATUS_OK) {
       Serial.print("MIFARE_Write() failed: ");
       Serial.println(mfrc522.GetStatusCodeName(status));
-      return 0;
+      return status;
     }
     i += 16;
     block++;
@@ -116,5 +116,5 @@ int addText(byte authKeyType, byte text[])
   }
 
   Serial.println("block written");
-  return 1;
+  return status;
 }
