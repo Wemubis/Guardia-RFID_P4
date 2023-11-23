@@ -39,23 +39,23 @@ void setup() {
 }
 
 void loop() {
-	String cardId = readCard();
+	String cardId = read_UID();
 
 	// Look for new cards
 	if (cardId != "") {
 		Serial.println("Card detected!");
 
 		// Authenticate with the modified keys
-		if (checkKeys() != MFRC522::STATUS_OK) {
+		if (checkKeysAndReadBlock() != MFRC522::STATUS_OK) {
 
 			// Effectuer une requête HTTPS au serveur
-	    		WiFiClientSecure client;
+	        WiFiClientSecure client;
 			client.setInsecure();  // Ignorer la vérification du certificat
 			HTTPClient http;
 
 			String url = String(serverUrl) + "?cardId=" + cardId;
 
-			if (http.begin(client, url)) {
+			if (http.begin(*client, url)) {
 				int	httpCode = http.GET();
 
 				if (httpCode == 200) {
@@ -85,7 +85,7 @@ void loop() {
 					Serial.println(httpCode);
 					Serial.println("Error accessing server");
 				}
-				http.end();
+				https.end();
 			}
 
 		} else {
@@ -97,19 +97,27 @@ void loop() {
 	}
 }
 
-MFRC522::StatusCode checkKeys() {
+MFRC522::STATUS_OK checkKeysAndReadBlock() {
 	int		block = 4;
 	byte	lenBuffer = 18;
 	byte	readDataBlock[18];
 
 	while (block < 64) {
-		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &newKeyA, &(mfrc522.uid));
+		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &keyA, &(mfrc522.uid))
 		if (status != MFRC522::STATUS_OK) {
 			Serial.print("PCD_Authenticate() failed: ");
 			Serial.println(mfrc522.GetStatusCodeName(status));
 			return status;
   		}
 		block += 4;
+	}
+
+	block = 1;
+	status = mfrc522.MIFARE_Read(block, readDataBlock, lenBuffer);
+	if (status != MFRC522::STATUS_OK) {
+		Serial.print("MIFARE_Write() failed: ");
+		Serial.println(mfrc522.GetStatusCodeName(status));
+		return status;
 	}
 	return status;
 }

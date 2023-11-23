@@ -53,11 +53,6 @@ void loop() {
     }
     Serial.println("Keys changed successfully!");
 
-    // Halt PICC (put the card into sleep mode)
-    mfrc522.PICC_HaltA();
-    // Stop encryption on PCD
-    mfrc522.PCD_StopCrypto1();
-
     delay(1000);
     Serial.println("Scan the RFID card to change the keys...");
   }
