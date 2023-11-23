@@ -1,6 +1,9 @@
 # Projet-4-RFID
 
 Conception du circuit et sa documentation : 
+  
+  La connection entre l'ESP32-C3 et le lecteur de carte RFID-RC522 s'effectue en SPI.
+  La communication entre la base de données (Raspberry Pi 4) et l'ESP32-C3 se fera en WiFi.
 
 Justification des choix techniques et UX : 
 
