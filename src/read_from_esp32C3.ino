@@ -98,8 +98,6 @@ void loop() {
 
 MFRC522::StatusCode checkKeys() {
 	int		block = 4;
-	byte	lenBuffer = 18;
-	byte	readDataBlock[18];
 
 	while (block < 64) {
 		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &newKeyA, &(mfrc522.uid));
