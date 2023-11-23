@@ -77,7 +77,7 @@ MFRC522::StatusCode changeKeys(int block) {
     return status;
   }
 
-  mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &newKeyA, &(mfrc522.uid));
+  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &newKeyA, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
     Serial.print("PCD_Authenticate() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
@@ -98,6 +98,7 @@ MFRC522::StatusCode addText(byte text[])
     return status;
   }
 
+  status = mfrc522.MIFARE_Write(block, text, 16);
   if (status != MFRC522::STATUS_OK) {
     Serial.print("MIFARE_Write() failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
