@@ -21,42 +21,42 @@
 
 ### Justification des choix techniques et UX : 
 
-  #### 1) Utilisation de bibliothèques :
+  # Documentation du Projet
 
-  Nous avons intégré des bibliothèques telles que _ESP8266WiFi.h_, _ESP8266HTTPClient.h_, _ArduinoJson.h_, et _MFRC522.h_ pour profiter de fonctionnalités prêtes à l'emploi, simplifiant ainsi notre travail avec l'ESP8266, les requêtes HTTP, la             manipulation de JSON, et le lecteur RFID.
+# Documentation du Projet
 
-  #### 2) Configuration WiFi :
+## 1) Utilisation de bibliothèques :
 
-  Nous avons stocké les informations de connexion WiFi, le SSID et le mot de passe, en tant que constantes (ssid et password). Cela rend notre code plus lisible, mais il est important de noter que dans un contexte de sécurité, il serait préférable         d'adopter des méthodes plus sûres pour stocker ces informations.
+Nous avons intégré des bibliothèques telles que _ESP8266WiFi.h_, _ESP8266HTTPClient.h_, _ArduinoJson.h_, et _MFRC522.h_ pour simplifier notre travail avec l'ESP8266, les requêtes HTTP, le traitement de JSON, et le lecteur RFID.
 
-  #### 3) URL du serveur :
+## 2) Configuration WiFi :
 
-  Nous avons défini l'URL du serveur en tant que constante (serverUrl) pour permettre une modification facile si jamais le serveur change. Cela rend notre code plus flexible.
+Les informations de connexion WiFi (SSID et mot de passe) sont stockées en tant que constantes (ssid et password) pour une meilleure lisibilité. Cependant, il est recommandé d'adopter des méthodes plus sécurisées pour stocker ces données sensibles.
 
-  #### 4) HTTPS et WiFiClientSecure :
+## 3) URL du serveur :
 
-  Pour assurer la sécurité de nos données, nous avons choisi d'utiliser le protocole HTTPS en utilisant _WiFiClientSecure_. Cela garantit que les échanges entre le périphérique et le serveur sont chiffrés.
+L'URL du serveur est définie en tant que constante (serverUrl), facilitant ainsi d'éventuelles modifications en cas de changement de serveur. Cela rend notre code plus flexible.
 
-  #### 5) Rétroaction LED :
+## 4) HTTPS et WiFiClientSecure :
 
-  Nous avons inclus une LED connectée à la broche D2 pour fournir une rétroaction visuelle claire à l'utilisateur ou à l'administrateur, indiquant si l'accès est autorisé ou refusé.
+Pour sécuriser les échanges de données, nous utilisons le protocole HTTPS avec _WiFiClientSecure_, assurant un chiffrement des données entre le périphérique et le serveur.
 
-  #### 6) Configuration du module RFID :
+## 5) Configuration du module RFID :
 
-  Nous avons utilisé les broches _SS_PIN_ et _RST_PIN_ pour configurer le module RFID (_MFRC522_). Cette configuration est nécessaire pour que le module fonctionne correctement.
+Les broches _SS_PIN_ et _RST_PIN_ sont utilisées pour configurer le module RFID (_MFRC522_), garantissant son bon fonctionnement.
 
-  #### 7) Communication série :
+## 6) Communication série :
 
-  Nous avons intégré la communication série pour permettre le débogage en affichant des messages d'état sur le moniteur série. Cela aide à comprendre ce qui se passe pendant l'exécution du programme.
+La communication série est intégrée pour faciliter le débogage en affichant des messages d'état sur le moniteur série, aidant à comprendre le déroulement du programme.
 
-  #### 8) Structure du code :
+## 7) Structure du code :
 
-  Nous avons organisé le code en fonctions setup() et loop(), ce qui permet de séparer l'initialisation des opérations répétitives. La fonction readCard() encapsule la logique de lecture des cartes RFID pour une meilleure lisibilité.
+Le code est organisé en fonctions `setup()` et `loop()`, séparant ainsi l'initialisation des opérations répétitives. La fonction `readCard()` encapsule la logique de lecture des cartes RFID, améliorant la lisibilité.
 
-  #### 9) Gestion des erreurs :
+## 8) Gestion des erreurs :
 
-  Nous avons inclus des vérifications d'erreur, comme la vérification du statut de la connexion WiFi et la gestion des erreurs HTTP, pour assurer la robustesse du programme même en cas de problèmes.
+Des vérifications d'erreur sont incluses, telles que la vérification du statut de la connexion WiFi et la gestion des erreurs HTTP, assurant la robustesse du programme même en cas de problèmes.
 
-  #### 10) Fonction de délai :
+## 9) Fonction de délai :
 
-  Nous avons introduit un délai d'une seconde (delay(1000)) entre les lectures de cartes RFID pour éviter une lecture trop fréquente. Cela peut être ajusté en fonction des besoins spécifiques.
+Un délai d'une seconde (`delay(1000)`) entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
