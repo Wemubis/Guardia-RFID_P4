@@ -67,6 +67,7 @@ On a récupéré les codes d'erreur à l'aide de ces fonctions :
 - _`httpCode`_ pour les codes d'erreur HTTP
 - _`errer.c_str()`_ pour le parking du JSON
 
+<br>
 
-> [!NOTE] Remarque
+> [!NOTE]
 > Un délai d'une seconde _`delay(1000)`_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
