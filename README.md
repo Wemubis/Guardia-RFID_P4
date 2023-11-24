@@ -17,7 +17,7 @@
 
   #### 3) Schéma du circuit :
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![schema du circuit](https://github.com/SebastienCherki/Projet-4-RFID/blob/main/Schéma%20ESP32%20et%20RC522.png?raw=true)
 
 
 ## Justification des choix techniques et UX : 
