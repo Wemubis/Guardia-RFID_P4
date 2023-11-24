@@ -60,11 +60,17 @@ Pour chaque erreur, on récupère le code associé, on affiche le tout sur la so
 
 On a recupere les codes d'erreurs a l'aide de ses fonctions :
 - `mfrc522.GetStatusCodeName(status)` lors des test d'authetification ou lors d'ecritures sur la carte.
-- ou avec `` & `` pour les codes d'erreu HTTP ou pour le parsing du JSON.
-- if (error) {
+- pour les codes d'erreu HTTP
+	- `else {
+		Serial.print("HTTP Code: ");
+		Serial.println(httpCode);
+		Serial.println("Error accessing server");
+	}`	
+- pour le parsing du JSON
+	- `if (error) {
 		Serial.print("JSON parsing failed! Error: ");
 		Serial.println(error.c_str());
-  }
+	}`
 
 ### 8) Fonction de délai :
 
