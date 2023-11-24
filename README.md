@@ -23,6 +23,7 @@
 
 ![schema du circuit](https://github.com/SebastienCherki/Projet-4-RFID/blob/main/Schéma%20ESP32%20et%20RC522.png?raw=true)
 
+<br>
 
 ## Justification des choix techniques et UX : 
 ### 1) Utilisation de bibliothèques :
