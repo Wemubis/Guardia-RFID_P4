@@ -53,7 +53,7 @@ void loop() {
 		Serial.println("Card detected!");
 
 		// Authenticate with the modified keys
-		if (checkKeys() != MFRC522::STATUS_OK) {
+		if (checkKeys() == MFRC522::STATUS_OK) {
 
 			// Effectuer une requête HTTPS au serveur
 			WiFiClientSecure client;
