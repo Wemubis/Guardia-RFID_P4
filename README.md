@@ -1,5 +1,5 @@
 ___
-Lien github : [Repo Github](https://github.com/SebastienCherki/Projet-4-RFID)
+Notre répo Github : [Projet 4](https://github.com/SebastienCherki/Projet-4-RFID)
 ___
 
 # Projet-4-RFID
