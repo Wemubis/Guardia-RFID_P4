@@ -23,7 +23,7 @@
 
   #### 4) Schéma du circuit :
 
-![schema du circuit](https://github.com/SebastienCherki/Projet-4-RFID/blob/main/Schema_ESP32_RC522.png)
+![schema du circuit](https://github.com/SebastienCherki/Projet-4-RFID/blob/main/dependencies/Schema_ESP32_RC522.png)
 
 <br><br>
 
