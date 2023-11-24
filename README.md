@@ -50,7 +50,11 @@ La communication série est intégrée pour faciliter le débogage en affichant 
 
 ### 6) Structure du code :
 
-Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'initialisation des opérations répétitives. La fonction `readCard()` encapsule la logique de lecture des cartes RFID, améliorant la lisibilité.
+Le code est organisé en differentes fonctions de base _`setup()`_ et _`loop()`_, séparant ainsi l'initialisation des opérations répétitives.
+
+On y a ajouté plusieurs autres fonctions pour améliorer la lisibilité du code et sa compréhension.
+- On a les fonctions `addText()` & `changeKeys()` dans [[write_key_text_card.ino]] qui nous permettent d'ajouter du texte sur 16 bytes et de changer les clefs sur tous les secteurs sauf le secteur 0 qui reste en clair (choix fait par l'équipe).
+- Et on a les fonctions `readCard()` & `checkKeys` dans [[Projet_RFID.ino]] qui nous permettent de lire les UID des badges et de vérifier l'authentification avec les bonnes clefs sur les secteurs où elles ont été modifies.
 
 ### 7) Gestion des erreurs :
 
@@ -59,7 +63,7 @@ Des vérifications d'erreur sont incluses, telles que la vérification du statut
 Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions/boucles pour revenir au stade de départ de la fonction `void loop()`.
 
 On a récupéré les codes d'erreur à l'aide de ces fonctions :
-- `mfrc522.GetStatusCodeName(status) `lors des tests d'authentification ou lors d'écritures sur la carte.
+- `mfrc522.GetStatusCodeName(status)` lors des tests d'authentification ou lors d'écritures sur la carte
 - `httpCode` pour les codes d'erreur HTTP
 - `errer.c_str()` pour le parking du JSON
 
