@@ -2,8 +2,8 @@
 #include <MFRC522.h>
 
 // IF ESP8266 IS USED
-// #define SS_PIN D8
-// #define RST_PIN D4
+// #define SS_PIN 15
+// #define RST_PIN 2
 // IF ESP32-C3 IS USED
 #define SS_PIN D1
 #define RST_PIN D0
