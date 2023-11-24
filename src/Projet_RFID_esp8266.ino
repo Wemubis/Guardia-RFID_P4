@@ -14,13 +14,15 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 void setup() {
     Serial.begin(115200);
-    WiFi.begin(ssid, password);
 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
-    }
-    Serial.println("Connected to WiFi");
+	WiFi.begin(ssid, password);
+	Serial.println("Connecting to WiFi...");
+	while (WiFi.status() != WL_CONNECTED) {
+		delay(1000);
+		Serial.print(".");
+	}
+	Serial.println("");
+	Serial.println("Connected to WiFi!");
 
     SPI.begin();
     mfrc522.PCD_Init();
