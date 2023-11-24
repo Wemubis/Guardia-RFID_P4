@@ -56,12 +56,12 @@ Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'
 
 Des vérifications d'erreur sont incluses, telles que la vérification du statut de la connexion WiFi, du status après authentification ou ecriture sur les cartes et la gestion des erreurs HTTP, assurant la robustesse du programme même en cas de problèmes.
 
-Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions / boucles pour revenir au stade de départ de la fonction loop.
+Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions/boucles pour revenir au stade de départ de la fonction `void loop()`.
 
-On a recupere les codes d'erreurs a l'aide de ses fonctions :
-- `mfrc522.GetStatusCodeName(status)` lors des test d'authetification ou lors d'ecritures sur la carte.
-- `httpCode` pour les codes d'erreur HTTP	
-- `error.c_str()` pour le parsing du JSON
+On a récupéré les codes d'erreur à l'aide de ces fonctions :
+- `mfrc522.GetStatusCodeName(status) `lors des tests d'authentification ou lors d'écritures sur la carte.
+- `httpCode` pour les codes d'erreur HTTP
+- `errer.c_str()` pour le parking du JSON
 
 
 ### 8) Fonction de délai :
