@@ -49,7 +49,7 @@ void loop() {
 	String cardId = readCard();
 
 	// Look for new cards
-	if (cardId != "") {
+	if (cardId == "") {
 		Serial.println("Card detected!");
 
 		// Authenticate with the modified keys
