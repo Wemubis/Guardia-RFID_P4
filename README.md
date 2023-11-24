@@ -6,6 +6,7 @@
   #### 1) ESP8266 Module (NodeMCU) :
 
   Ce module est utilisé comme microcontrôleur principal pour le système. Il intègre le module WiFi ESP8266 et offre une plateforme compatible avec l'Arduino.
+  
 <br>
 
   #### 2) RFID Module (MFRC522):
