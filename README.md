@@ -54,7 +54,7 @@ Le code est organisé en differentes fonctions de base _`setup()`_ et _`loop()`_
 
 On y a ajouté plusieurs autres fonctions pour améliorer la lisibilité du code et sa compréhension.
 - On a les fonctions _`addText()`_ & _`changeKeys()`_ dans [write_key_text_card.ino](src/write_key_text_card.ino) qui nous permettent d'ajouter du texte sur 16 bytes et de changer les clefs sur tous les secteurs sauf le secteur 0 qui reste en clair (choix fait par l'équipe).
-- Et on a les fonctions _`readCard()`_ & _`checkKeys`_ dans [Projet_RFID.ino](src/Projet_RFID.ino) qui nous permettent de lire les UID des badges et de vérifier l'authentification avec les bonnes clefs sur les secteurs où elles ont été modifies.
+- Et on a les fonctions _`readCard()`_ & _`checkKeys()`_ dans [Projet_RFID.ino](src/Projet_RFID.ino) qui nous permettent de lire les UID des badges et de vérifier l'authentification avec les bonnes clefs sur les secteurs où elles ont été modifies.
 
 ### 7) Gestion des erreurs :
 
@@ -68,6 +68,5 @@ On a récupéré les codes d'erreur à l'aide de ces fonctions :
 - _`errer.c_str()`_ pour le parking du JSON
 
 
-### 8) Fonction de délai :
-
-Un délai d'une seconde _`delay(1000)`_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
+> [!NOTE] Remarque
+> Un délai d'une seconde _`delay(1000)`_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
