@@ -15,7 +15,11 @@
   La connection entre l'ESP32-C3 et le lecteur de carte RFID-RC522 s'effectue en SPI.
   La communication entre la base de données (Raspberry Pi 4) et l'ESP32-C3 se fera en WiFi.
 
-  #### 3) Schéma du circuit :
+  #### 3) Raspberry Pi 4 :
+  
+  Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès.
+
+  #### 4) Schéma du circuit :
 
 ![schema du circuit](https://github.com/SebastienCherki/Projet-4-RFID/blob/main/Schéma%20ESP32%20et%20RC522.png?raw=true)
 
