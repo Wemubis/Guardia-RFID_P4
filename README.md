@@ -17,6 +17,9 @@
 
   #### 3) Schéma du circuit :
 
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+
 ## Justification des choix techniques et UX : 
 ### 1) Utilisation de bibliothèques :
 
