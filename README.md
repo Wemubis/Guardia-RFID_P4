@@ -9,15 +9,15 @@
   #### 2) RFID Module (MFRC522):
  
   Le module RFID MFRC522 est utilisé pour la lecture des cartes RFID. Il communique avec l'ESP8266 via SPI (Serial Peripheral Interface).
-
-
   
-  La connection entre l'ESP32-C3 et le lecteur de carte RFID-RC522 s'effectue en SPI.
+  Un deuxieme module RFID MFRC522 est utilisé pour l'ecriture des cartes RFID. Il communique avec l'ESP32-C3 également via SPI (Serial Peripheral Interface).
+
+
   La communication entre la base de données (Raspberry Pi 4) et l'ESP32-C3 se fera en WiFi.
 
   #### 3) Raspberry Pi 4 :
   
-  Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès.
+  Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès. La communication entre la base de données et l'ESP8266 se fera en WiFi.
 
   #### 4) Schéma du circuit :
 
@@ -27,7 +27,7 @@
 ## Justification des choix techniques et UX : 
 ### 1) Utilisation de bibliothèques :
 
-Nous avons intégré des bibliothèques telles que **ESP8266WiFi.h**, **ESP8266HTTPClient.h**, **ArduinoJson.h**, et **MFRC522.h** pour simplifier notre travail avec l'ESP8266, les requêtes HTTP, le traitement de JSON, et le lecteur RFID.
+Nous avons intégré des bibliothèques telles que **ESP8266WiFi.h**, **ESP8266HTTPClient.h**, **ArduinoJson.h**, et **MFRC522.h** en plus de celles de base pour simplifier notre travail avec l'ESP8266, les requêtes HTTP, le traitement de JSON, et le lecteur RFID.
 
 ### 2) Configuration WiFi :
 
@@ -51,7 +51,7 @@ Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'
 
 ### 7) Gestion des erreurs :
 
-Des vérifications d'erreur sont incluses, telles que la vérification du statut de la connexion WiFi et la gestion des erreurs HTTP, assurant la robustesse du programme même en cas de problèmes.
+Des vérifications d'erreur sont incluses, telles que la vérification du statut de la connexion WiFi, du status après authentification ou ecriture sur les cartes et la gestion des erreurs HTTP, assurant la robustesse du programme même en cas de problèmes.
 
 ### 8) Fonction de délai :
 
