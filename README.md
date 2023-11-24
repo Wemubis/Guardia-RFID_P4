@@ -15,7 +15,9 @@
 
   #### 3) Raspberry Pi 4 :
   
-  Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès. La communication entre la base de données et l'ESP8266 se fera en WiFi.
+  Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès.
+  
+  La communication entre la base de données et l'ESP8266 se fait en WiFi.
 
   #### 4) Schéma du circuit :
 
@@ -50,6 +52,8 @@ Le code est organisé en fonctions _`setup()`_ et _`loop()`_, séparant ainsi l'
 ### 7) Gestion des erreurs :
 
 Des vérifications d'erreur sont incluses, telles que la vérification du statut de la connexion WiFi, du status après authentification ou ecriture sur les cartes et la gestion des erreurs HTTP, assurant la robustesse du programme même en cas de problèmes.
+
+Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions / boucles pour revenir au stade de départ de la fonction loop.
 
 ### 8) Fonction de délai :
 
