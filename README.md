@@ -53,8 +53,8 @@ La communication série est intégrée pour faciliter le débogage en affichant 
 Le code est organisé en differentes fonctions de base _`setup()`_ et _`loop()`_, séparant ainsi l'initialisation des opérations répétitives.
 
 On y a ajouté plusieurs autres fonctions pour améliorer la lisibilité du code et sa compréhension.
-- On a les fonctions `addText()` & `changeKeys()` dans [write_key_text_card.ino](src/write_key_text_card.ino) qui nous permettent d'ajouter du texte sur 16 bytes et de changer les clefs sur tous les secteurs sauf le secteur 0 qui reste en clair (choix fait par l'équipe).
-- Et on a les fonctions `readCard()` & `checkKeys` dans [Projet_RFID.ino](src/Projet_RFID.ino) qui nous permettent de lire les UID des badges et de vérifier l'authentification avec les bonnes clefs sur les secteurs où elles ont été modifies.
+- On a les fonctions _`addText()`_ & _`changeKeys()`_ dans [write_key_text_card.ino](src/write_key_text_card.ino) qui nous permettent d'ajouter du texte sur 16 bytes et de changer les clefs sur tous les secteurs sauf le secteur 0 qui reste en clair (choix fait par l'équipe).
+- Et on a les fonctions _`readCard()`_ & _`checkKeys`_ dans [Projet_RFID.ino](src/Projet_RFID.ino) qui nous permettent de lire les UID des badges et de vérifier l'authentification avec les bonnes clefs sur les secteurs où elles ont été modifies.
 
 ### 7) Gestion des erreurs :
 
@@ -63,9 +63,9 @@ Des vérifications d'erreur sont incluses, telles que la vérification du statut
 Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions/boucles pour revenir au stade de départ de la fonction `void loop()`.
 
 On a récupéré les codes d'erreur à l'aide de ces fonctions :
-- `mfrc522.GetStatusCodeName(status)` lors des tests d'authentification ou lors d'écritures sur la carte
-- `httpCode` pour les codes d'erreur HTTP
-- `errer.c_str()` pour le parking du JSON
+- _`mfrc522.GetStatusCodeName(status)`_ lors des tests d'authentification ou lors d'écritures sur la carte
+- _`httpCode`_ pour les codes d'erreur HTTP
+- _`errer.c_str()`_ pour le parking du JSON
 
 
 ### 8) Fonction de délai :
