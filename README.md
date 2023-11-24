@@ -1,23 +1,26 @@
 # Projet-4-RFID
 
 ### Conception du circuit et sa documentation : 
+<br>
 
   #### 1) ESP8266 Module (NodeMCU) :
 
   Ce module est utilisé comme microcontrôleur principal pour le système. Il intègre le module WiFi ESP8266 et offre une plateforme compatible avec l'Arduino.
+<br>
 
   #### 2) RFID Module (MFRC522):
  
   Le module RFID MFRC522 est utilisé pour la lecture des cartes RFID. Il communique avec l'ESP8266 via SPI (Serial Peripheral Interface).
   
   Un deuxieme module RFID MFRC522 est utilisé pour l'ecriture des cartes RFID. Il communique avec l'ESP32-C3 également via SPI (Serial Peripheral Interface).
-
+<br>
 
   #### 3) Raspberry Pi 4 :
   
   Le Raspberry Pi 4 permet d'avoir une base de donnée SQLi auquel notre module ESP8266 peut se connecter pour avoir des informations sur les cartes, savoir si elles sont valides ou non ainsi que leurs droits d'accès.
   
   La communication entre la base de données et l'ESP8266 se fait en WiFi.
+<br>
 
   #### 4) Schéma du circuit :
 
