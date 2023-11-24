@@ -58,6 +58,14 @@ Des vérifications d'erreur sont incluses, telles que la vérification du statut
 
 Pour chaque erreur, on récupère le code associé, on affiche le tout sur la sortie série et on sort de nos conditions / boucles pour revenir au stade de départ de la fonction loop.
 
+On a recupere les codes d'erreurs a l'aide de ses fonctions :
+- `mfrc522.GetStatusCodeName(status)` lors des test d'authetification ou lors d'ecritures sur la carte.
+- ou avec `` & `` pour les codes d'erreu HTTP ou pour le parsing du JSON.
+- if (error) {
+		Serial.print("JSON parsing failed! Error: ");
+		Serial.println(error.c_str());
+  }
+
 ### 8) Fonction de délai :
 
 Un délai d'une seconde _`delay(1000)`_ entre les lectures de cartes RFID a été ajouté pour éviter une lecture trop fréquente, offrant une personnalisation possible en fonction des besoins spécifiques.
