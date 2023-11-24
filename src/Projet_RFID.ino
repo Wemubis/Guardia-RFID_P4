@@ -1,75 +1,122 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <MFRC522.h>
+// IF ESP8266 IS USED
+// #include <ESP8266WiFi.h>
+// #include <ESP8266HTTPClient.h>
+// IF ESP32-C3 IS USED
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 const char* ssid = "Seb";
 const char* password = "12345678914";
-const char* serverUrl = "https://cloud.sebhost.fr/rfid-app/checkAccess.php";  // URL du serveur pour la vérification d'accès via RFID
+const char* serverUrl = "https://cloud.sebhost.fr/rfid-app/checkAccess.php";
 
-#define SS_PIN 15  // D8
-#define RST_PIN 2   // D4
+// IF ESP8266 IS USED
+// #define SS_PIN D8
+// #define RST_PIN D4
+// IF ESP32-C3 IS USED
+#define SS_PIN D1
+#define RST_PIN D0
+
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
+MFRC522::StatusCode status;
+
+// DEFINE NEW KEYS
+MFRC522::MIFARE_Key  newKeyA = {0x4F, 0x2E, 0x7A, 0x91, 0xC8, 0x3F};
+// MFRC522::MIFARE_Key  newKeyB = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
+
+
 void setup() {
-    Serial.begin(115200);
-    WiFi.begin(ssid, password);
+	Serial.begin(115200);
 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
-    }
-    Serial.println("Connected to WiFi");
+	WiFi.begin(ssid, password);
+	Serial.println("Connecting to WiFi...");
+	while (WiFi.status() != WL_CONNECTED) {
+		delay(1000);
+		Serial.print(".");
+	}
+	Serial.println("");
+	Serial.println("Connected to WiFi!");
 
-    SPI.begin();
-    mfrc522.PCD_Init();
+	SPI.begin();
+	mfrc522.PCD_Init();
+	Serial.println("Scan RFID card to check for authorization...");
 }
 
 void loop() {
-    String cardId = readCard();  // Lecture de l'identifiant de la carte RFID
+	String cardId = readCard();
 
-    if (cardId != "") {
-        WiFiClientSecure client;  // Utilisation de WiFiClientSecure pour HTTPS
-        client.setInsecure();  // Ignorer la vérification du certificat
-        HTTPClient http;
+	// Look for new cards
+	if (cardId != "") {
+		Serial.println("Card detected!");
 
-        String url = String(serverUrl) + "?cardId=" + cardId;  // Construction de l'URL avec l'identifiant de la carte
+		// Authenticate with the modified keys
+		if (checkKeys() != MFRC522::STATUS_OK) {
 
-        if (http.begin(client, url)) {
-            int httpCode = http.GET();
+			// Effectuer une requête HTTPS au serveur
+			WiFiClientSecure client;
+			client.setInsecure();  // Ignorer la vérification du certificat
+			HTTPClient http;
 
-            if (httpCode == 200) {
-                DynamicJsonDocument doc(1024);  // Création d'un document JSON dynamique pour stocker la réponse
-                DeserializationError error = deserializeJson(doc, http.getString());
+			String url = String(serverUrl) + "?cardId=" + cardId;
 
-                if (error) {
-                    Serial.print("JSON parsing failed! Error: ");
-                    Serial.println(error.c_str());
-                } else {
-                    const char* status_ = doc["status"];
+			if (http.begin(client, url)) {
+				int	httpCode = http.GET();
 
-                    if (strcmp(status_, "Autorisé") == 0) {
-                        Serial.println("Accès Autorisé");
-                    } else if (strcmp(status_, "Refusé") == 0) {
-                        Serial.println("Accès Refusé");
-                    } else if (strcmp(status_, "Inconnu") == 0) {
-                        Serial.println("Carte Inconnue");
-                    } else {
-                        Serial.println("Statut Inconnu");
-                    }
-                }
-            } else {
-                Serial.print("HTTP Code: ");
-                Serial.println(httpCode);
-                Serial.println("Error accessing server");
-            }
+				if (httpCode == 200) {
+					// Analyser la réponse JSON
+					DynamicJsonDocument doc(1024);
+					DeserializationError error = deserializeJson(doc, http.getString());
 
-            http.end();
-        }
-    }
+					if (error) {
+						Serial.print("JSON parsing failed! Error: ");
+						Serial.println(error.c_str());
+					} else {
+						// Vérifier le statut d'accès
+						const char* status_ = doc["status"];
 
-    delay(1000);
+						if (strcmp(status_, "Autorisé") == 0) {
+							Serial.println("Access Authorized");
+						} else if (strcmp(status_, "Refusé") == 0) {
+							Serial.println("Access Denied!");
+						} else if (strcmp(status_, "Inconnu") == 0) {
+							Serial.println("Card Unknown!");
+						} else {
+							Serial.println("Unknown status");
+						}
+					}
+				} else {
+					Serial.print("HTTP Code: ");
+					Serial.println(httpCode);
+					Serial.println("Error accessing server");
+				}
+				http.end();
+			}
+
+		} else {
+			Serial.println("Authorization failed!");
+		}
+
+		delay(1000);
+		Serial.println("Scan RFID card to check for authorization...");
+	}
+}
+
+MFRC522::StatusCode checkKeys() {
+	int		block = 4; // DO NOT TOUCH SECTOR 0
+
+	while (block < 64) {
+		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &newKeyA, &(mfrc522.uid));
+		if (status != MFRC522::STATUS_OK) {
+			Serial.print("PCD_Authenticate() failed: ");
+			Serial.println(mfrc522.GetStatusCodeName(status));
+			return status;
+  		}
+		block += 4;
+	}
+	return status;
 }
 
 String readCard() {
@@ -82,6 +129,5 @@ String readCard() {
         cardId.toUpperCase();
         return cardId;
     }
-
     return "";
 }
